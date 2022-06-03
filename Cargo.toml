@@ -1,0 +1,8 @@
+[package]
+name = "wtc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+exitcode = "1.1.2"
+ureq = "2.4.0"
