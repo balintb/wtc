@@ -1,18 +1,23 @@
+use rand::seq::SliceRandom;
 use ureq::Error;
 
+const REMOTE_FILE: &str =
+    "https://raw.githubusercontent.com/ngerakines/commitment/master/commit_messages.txt";
+
+fn load_commit_file() -> Result<String, Error> {
+    // download file
+    let response = ureq::get(REMOTE_FILE).call()?;
+    let content = response.into_string()?;
+    // TODO: save file to temp dir:
+    // const TEMP_FILE: &str = "/tmp/commit_messages.txt";
+    // return content
+    Ok(content)
+}
+
 fn main() {
-    match ureq::get("http://whatthecommit.com/index.txt").call() {
-        Ok(response) => {
-            println!("{}", response.into_string().unwrap().trim());
-        }
-        Err(Error::Status(code, _)) => {
-            println!("ERROR: HTTP {}", code);
-            std::process::exit(exitcode::DATAERR);
-        }
-        Err(_) => {
-            /* some kind of io/transport error */
-            println!("IO transport error!");
-            std::process::exit(exitcode::DATAERR);
-        }
-    }
+    let content = load_commit_file().unwrap();
+    let lines: Vec<&str> = content.split('\n').collect();
+    let random_line = lines.choose(&mut rand::thread_rng()).unwrap();
+
+    println!("{}", random_line);
 }

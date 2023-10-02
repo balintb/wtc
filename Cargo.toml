@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 exitcode = "1.1.2"
 ureq = "2.4.0"
+rand = "0.8.4"
